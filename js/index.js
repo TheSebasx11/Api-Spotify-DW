@@ -18,38 +18,72 @@ const ApiControl = (function () {
   };
 
   const _getArtist = async (token, artistName) => {
-    let query = function (artistName) {
-      const regex = / /i;
-      artistName.replace(regex, "%20");
-    };
-    const result = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=artist`, {
-      method: "GET",
-      headers: {
+    const result = await fetch(
+      `https://api.spotify.com/v1/search?q=${artistName}&type=artist&limit=1`,
+      {
+        method: "GET",
         headers: { Authorization: "Bearer " + token },
-      },
-    });
+      }
+    );
     const data = await result.json();
-    return data.playlists.items;
+    return data.artists.items[0];
   };
+
+  const _getAlbumsFromArtist = async (token, artistId) =>{
+    const result = await fetch(`https://api.spotify.com/v1/artists/${artistId}/albums?limit=50`,
+    {
+        method: 'GET',
+        headers:{
+            Authorization: "Bearer " + token 
+        }
+    }
+    );
+    const data = await result.json();
+    return data.items;
+  }
+
+  const _getTopSongsFromArtist = async (token, artistId) =>{
+    const result = await fetch(`https://api.spotify.com/v1/artists/${artistId}/top-tracks?market=ES`,
+    {
+        method: 'GET',
+        headers:{
+            Authorization: "Bearer " + token 
+        }
+    }
+    );
+    const data = await result.json();
+    return data;
+  }
 
   return {
     getToken() {
       return _getToken();
     },
 
-    getArtist(token, artistName){
-        return _getArtist(token, artistName);
-    }
+    getArtist(token, artistName) {
+      return _getArtist(token, artistName);
+    },
 
+    getAlbumsFromArtist(token, artistId){
+        return _getAlbumsFromArtist(token, artistId);
+    },
+
+    getTopSongsFromArtist(token, artistId){
+        return _getTopSongsFromArtist(token, artistId);
+    }
   };
 })();
 
-function mostrarCosita() {
-  ApiControl.getArtist().then((data)=>{
-    const divApp = document.getElementsByClassName("contenedor");
-    const element = document.createElement("p");
-    let html = `<p>${data.artist}</p>`;
-    element.innerHTML = html;
-    divApp[0].appendChild(element);
-  });
-}
+const UIController = (function (){
+    
+})
+
+mostrarCosita = async () => {
+  const token = await ApiControl.getToken();
+  const nombre = "Pink Floyd";
+  const artista = await ApiControl.getArtist(token, nombre);
+  const artistID = artista.id;
+  const albumes = await ApiControl.getAlbumsFromArtist(token, artistID);
+  const topSongs = await ApiControl.getTopSongsFromArtist(token, artistID);
+  console.log(topSongs);
+};
