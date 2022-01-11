@@ -1,4 +1,5 @@
 const ApiControl = (function () {
+ 
   const clientId = "ea0c085fe8f84a52aa667afac309890c";
   const clientSecret = "c4612bbc3f1d47c494918d3264e991a8";
 
@@ -31,7 +32,7 @@ const ApiControl = (function () {
 
   const _getAlbumsFromArtist = async (token, artistId) => {
     const result = await fetch(
-      `https://api.spotify.com/v1/artists/${artistId}/albums?limit=50`,
+      `https://api.spotify.com/v1/artists/${artistId}/albums?limit=40`,
       {
         method: "GET",
         headers: {
@@ -85,7 +86,7 @@ Mostrar = async () => {
   const artistID = artista.id;
   const albumes = await ApiControl.getAlbumsFromArtist(token, artistID);
   const topSongs = await ApiControl.getTopSongsFromArtist(token, artistID);
-  console.log(topSongs);
+  console.log(artista);
 };
 
 Mostrar_albumes = async () => {
@@ -120,11 +121,11 @@ Mostrar_albumes = async () => {
             <td class="text-white border p-2">${element.total_tracks}</td>
             <td class="text-white border p-2"><a href="${
               element.external_urls.spotify
-            }" target="_blank">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #000 transform: ;msFilter:;" class="hover:scale-125 duration-150 hover:fill-white"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="m9 17 8-5-8-5z"></path>
-        </svg>
-        </a>
-        </td>
+            }" target="_blank" class="flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #000 transform: ;msFilter:;" class=" hover:scale-125 duration-150 hover:fill-white"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="m9 17 8-5-8-5z"></path>
+            </svg>
+            </a>
+            </td>
         </tr>
         `;
   });
@@ -187,7 +188,7 @@ Mostrar_top = async () => {
         <td class="text-white border p-2">${element.album.name}</td>
         <td class="text-white border p-2">${colab}</td>
         <td class="text-white border p-2">
-            <a href="${element.external_urls.spotify}" target="_blank">
+            <a href="${element.external_urls.spotify}" target="_blank" class="flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #000 transform: ;msFilter:;" class="hover:scale-125 duration-150 hover:fill-white"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="m9 17 8-5-8-5z"></path>
             </svg>
             </a>
@@ -198,6 +199,36 @@ Mostrar_top = async () => {
   });
   htmlTabla += `</tbody></table>`;
   element.innerHTML = htmlTabla;
+  if (divApp.childElementCount >= 1) {
+    divApp.innerHTML = "";
+  }
+  divApp.appendChild(element);
+};
+
+Mostrar_Artista = async ()=> {
+  const token = await ApiControl.getToken();
+  const tf = document.getElementById("search_input");
+  const element = document.createElement("div");
+  let nombre = tf.value;
+  const divApp = document.getElementById("table_container");
+  const artist = await ApiControl.getArtist(token, nombre);
+  let genre = ``;
+  artist.genres.forEach((element,index)=>{
+    if(index != artist.genres.length - 1) {
+      genre += `${element}, `;
+    }else{
+      genre += `${element}`;
+    }
+  });
+  let html = `<div class="border border-black">
+    <img class="h-80" src="${artist.images[0].url}">
+    <p>Nombre: ${artist.name}</p>
+    <p>Nro de seguidores: ${artist.followers.total}</p>
+    <p>Genero(s): ${genre}</p>
+    <div class="border border-black h-12">Ir a escuchar: <a href="${artist.external_urls.spotify}" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #000 transform: ;msFilter:;" class="hover:scale-125 duration-150 hover:fill-white"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="m9 17 8-5-8-5z"></path>
+    </svg></a></div>
+  </div>`;
+  element.innerHTML=html;
   if (divApp.childElementCount >= 1) {
     divApp.innerHTML = "";
   }
