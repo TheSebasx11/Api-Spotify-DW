@@ -7,19 +7,21 @@
     <link rel="stylesheet" href="css/output.css"/>
     <title>Spotify Api</title>
   </head>
-  <body>
-    <section id="main_section" class=" w-screen h-fit bg-gradient-to-b from-[#138a3d] to-[#1dd65e] flex flex-col items-center">
+<!--bg-gradient-to-b from-[#138a3d] to-[#1dd65e]-->
+
+  <body class="bg-emerald-700">
+    <section id="main_section" class=" w-full flex flex-col items-center">
       <div id="container" class="flex flex-col items-center justify-between h-2/6 w-full mt-12">
         <h1 class="my-3 text-3xl text-white">¡Busca info de tu artista!</h1>
         <div id="inputs_container" class="flex flex-col items-center w-11/12">
           <input placeholder="Busca tu artista" id="search_input" type="search" class="w-3/4 h-10 px-4 py-1 m-4 border border-black rounded-xl">
           <div id="buttons">
             <button id="album_button" onclick="Mostrar_albumes()" class="w-fit h-8 mb-4 px-4 mr-3 border border-black rounded-xl text-white bg-black hover:scale-110 duration-100">Buscar albumes</button>
-            <button id="top_button" onClick = "mostrarCosita()" class="w-fit h-8 mb-4 px-4 border border-black rounded-xl text-white bg-black hover:scale-110 duration-100">Buscar canciones Top</button>
+            <button id="top_button" onClick="Mostrar_top()" class="w-fit h-8 mb-4 px-4 border border-black rounded-xl text-white bg-black hover:scale-110 duration-100">Buscar canciones Top</button>
           </div>
         </div>
       </div>
-      <div id="table_container" class="border border-black w-11/12">
+      <div id="table_container" class=" w-11/12 mb-6">
       </div>
     </section>
     <script src="js/index.js"></script>
