@@ -76,45 +76,6 @@ const ApiControl = (function () {
   };
 })();
 
-const UIController = (function () {
-  const DOMElements = {
-    textfield: "#search_input",
-    album_button: "#album_button",
-    top_buttom: "#top_button",
-    table_container: "#table_container",
-  };
-
-  return {
-
-    createAlbumItem(data,index){
-        let item = `
-            <tr>
-                <td>${data[index].name}</td>
-                <td>${data[index].release_date}</td>
-                <td>${data[index].total_tracks}</td>
-                <td><a href="${data[index].href}">Escuchar</a></td>
-            </tr>
-        `;
-        return item;
-    },
-
-    createAlbumTable() {
-      const container = document.getElementById(DOMElements.table_container);
-      const html = `
-        <table id="tabla">
-            <thead>
-                <tr>
-                    <th>Titulo</th>
-                    <th>Fecha de publicacion</th>
-                    <th>Total de canciones</th>
-                    <th>Escuchar</th>
-                </tr>
-            </thead>    
-        `;
-    },
-  };
-})();
-
 mostrarCosita = async () => {
   const token = await ApiControl.getToken();
   //const nombre = "Pink Floyd";
@@ -127,41 +88,44 @@ mostrarCosita = async () => {
   console.log(albumes);
 };
 
- Mostrar_albumes = async () => {
-    const token = await ApiControl.getToken();
-    const tf = document.getElementById("search_input");
-    const element = document.createElement("div");
-    let nombre = tf.value;
-    const div = document.getElementById("table_container");
-    const artist = await ApiControl.getArtist(token, nombre);
-    const id = artist.id;
-    const albumes = await ApiControl.getAlbumsFromArtist(token, id);
-    //creamos la tabla
-    let htmlTabla = `
+Mostrar_albumes = async () => {
+  const token = await ApiControl.getToken();
+  const tf = document.getElementById("search_input");
+  const element = document.createElement("div");
+  let nombre = tf.value;
+  const div = document.getElementById("table_container");
+  const artist = await ApiControl.getArtist(token, nombre);
+  const id = artist.id;
+  const albumes = await ApiControl.getAlbumsFromArtist(token, id);
+  //creamos la tabla
+  let htmlTabla = `
         <table id="tabla" class="w-full border-collapse border">
             <thead>
                 <tr class="bg-grey-100 border">
-                    <th class="text-left">Numero</th>
-                    <th class="text-left">Titulo</th>
-                    <th class="text-left">Fecha de publicacion</th>
-                    <th class="text-left">Total de canciones</th>
-                    <th class="text-left">Escuchar</th>
+                    <th class="text-left text-white">Numero</th>
+                    <th class="text-left text-white">Titulo</th>
+                    <th class="text-left text-white">Fecha de publicacion</th>
+                    <th class="text-left text-white">Total de canciones</th>
+                    <th class="text-left text-white">Escuchar</th>
                 </tr>
             </thead>
             <tbody>    
         `;
-    albumes.forEach((element,index) => {
-        htmlTabla += `
+  albumes.forEach((element, index) => {
+    htmlTabla += `
         <tr>
-            <td class="text-white">${index+1}</td>
+            <td class="text-white">${index + 1}</td>
             <td class="text-white">${element.name}</td>
             <td class="text-white">${element.release_date}</td>
             <td class="text-white">${element.total_tracks}</td>
-            <td class="text-white"><a href="${element.external_urls.spotify}" target="_blank">Escuchar</a></td>
+            <td class="text-white"><a href="${
+              element.external_urls.spotify
+            }" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(6, 49, 24, 1);transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="m9 17 8-5-8-5z"></path></svg></a></td>
         </tr>
-        `
-    });
-    htmlTabla += `</tbody></table>`;
-    element.innerHTML = htmlTabla;
-    div.appendChild(element);
-}
+        `;
+  });
+  htmlTabla += `</tbody></table>`;
+  element.innerHTML = htmlTabla;
+  div.appendChild(element);
+  
+};
