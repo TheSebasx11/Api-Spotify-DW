@@ -220,12 +220,12 @@ Mostrar_Artista = async ()=> {
       genre += `${element}`;
     }
   });
-  let html = `<div class="border border-black">
-    <img class="h-80" src="${artist.images[0].url}">
-    <p>Nombre: ${artist.name}</p>
-    <p>Nro de seguidores: ${artist.followers.total}</p>
-    <p>Genero(s): ${genre}</p>
-    <div class="border border-black h-12">Ir a escuchar: <a href="${artist.external_urls.spotify}" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #000 transform: ;msFilter:;" class="hover:scale-125 duration-150 hover:fill-white"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="m9 17 8-5-8-5z"></path>
+  let html = `<div class="">
+    <div class="flex items-center justify-center"><img class="h-80" src="${artist.images[0].url}"></div>
+    <div class="flex items-center justify-center"><p class="text-white">Nombre: <span class="text-black font-bold">${artist.name}</span></p></div>
+    <div class="flex items-center justify-center"><p class="text-white">Nro de seguidores: <span class=" text-black font-bold">${artist.followers.total}</span></p></div>
+    <div class="flex items-center justify-center"><p class="text-white">Genero(s): <span class="text-black font-bold">${genre}</span></p></div>
+    <div class="h-12 text-white flex items-center justify-center">Ir a escuchar : <a href="${artist.external_urls.spotify}" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #000 transform: ;msFilter:;" class="hover:scale-125 duration-150 hover:fill-white"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="m9 17 8-5-8-5z"></path>
     </svg></a></div>
   </div>`;
   element.innerHTML=html;
