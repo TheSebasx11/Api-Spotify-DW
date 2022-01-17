@@ -1,5 +1,4 @@
 const ApiControl = (function () {
- 
   const clientId = "ea0c085fe8f84a52aa667afac309890c";
   const clientSecret = "c4612bbc3f1d47c494918d3264e991a8";
 
@@ -86,7 +85,7 @@ Mostrar = async () => {
   const artistID = artista.id;
   const albumes = await ApiControl.getAlbumsFromArtist(token, artistID);
   const topSongs = await ApiControl.getTopSongsFromArtist(token, artistID);
-  console.log(artista);
+  console.log(topSongs);
 };
 
 Mostrar_albumes = async () => {
@@ -137,7 +136,7 @@ Mostrar_albumes = async () => {
   divApp.appendChild(element);
 };
 
-function milistomins(ms) {
+function MilisToMins(ms) {
   (min = Math.floor((ms / 1000 / 60) << 0)),
     (sec = Math.floor((ms / 1000) % 60));
   minS = min < 10 ? `0${min}` : `${min}`;
@@ -174,7 +173,7 @@ Mostrar_top = async () => {
     element.artists.forEach((element2, index) => {
       if (index != element.artists.length - 1) {
         colab += `${element2.name}, `;
-      }else{
+      } else {
         colab += `${element2.name}`;
       }
     });
@@ -182,13 +181,15 @@ Mostrar_top = async () => {
     <tr class="h-15 ">
         <td class="text-white border p-2">${index + 1}</td>
         <td class="text-white border p-2">${element.name}</td>
-        <td class="text-white border p-2">${milistomins(
+        <td class="text-white border p-2">${MilisToMins(
           element.duration_ms
         )}</td>
         <td class="text-white border p-2">${element.album.name}</td>
         <td class="text-white border p-2">${colab}</td>
         <td class="text-white border p-2">
-            <a href="${element.external_urls.spotify}" target="_blank" class="flex items-center justify-center">
+            <a href="${
+              element.external_urls.spotify
+            }" target="_blank" class="flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #000 transform: ;msFilter:;" class="hover:scale-125 duration-150 hover:fill-white"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="m9 17 8-5-8-5z"></path>
             </svg>
             </a>
@@ -205,7 +206,7 @@ Mostrar_top = async () => {
   divApp.appendChild(element);
 };
 
-Mostrar_Artista = async ()=> {
+Mostrar_Artista = async () => {
   const token = await ApiControl.getToken();
   const tf = document.getElementById("search_input");
   const element = document.createElement("div");
@@ -213,24 +214,131 @@ Mostrar_Artista = async ()=> {
   const divApp = document.getElementById("table_container");
   const artist = await ApiControl.getArtist(token, nombre);
   let genre = ``;
-  artist.genres.forEach((element,index)=>{
-    if(index != artist.genres.length - 1) {
+  artist.genres.forEach((element, index) => {
+    if (index != artist.genres.length - 1) {
       genre += `${element}, `;
-    }else{
+    } else {
       genre += `${element}`;
     }
   });
   let html = `<div class="">
-    <div class="flex items-center justify-center pt-2"><img class="h-80" src="${artist.images[0].url}"></div>
+    <div class="flex items-center justify-center pt-2"><img class="h-80 rounded-xl" src="${artist.images[0].url}"></div>
     <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Nombre: <span class="font-extralight">${artist.name}</span></p></div>
     <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold">Nro de seguidores: <span class="font-extralight">${artist.followers.total}</span></p></div>
     <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold">Genero(s): <span class="font-extralight">${genre}</span></p></div>
     <div class="h-12 text-white font-bold flex items-center justify-center text-2xl">Ir a escuchar : <a href=" ${artist.external_urls.spotify}" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style="fill: #000 transform: ;msFilter:;" class="hover:scale-125 duration-150 hover:fill-white mt-1"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="m9 17 8-5-8-5z"></path>
     </svg></a></div>
   </div>`;
-  element.innerHTML=html;
+  element.innerHTML = html;
   if (divApp.childElementCount >= 1) {
     divApp.innerHTML = "";
   }
   divApp.appendChild(element);
+};
+
+Mostrar_mas_famosa = async () => {
+  const token = await ApiControl.getToken();
+  const tf = document.getElementById("search_input");
+  let nombre = tf.value;
+  const divApp = document.getElementById("table_container");
+  const artist = await ApiControl.getArtist(token, nombre);
+  const id = artist.id;
+  const topSongs = await ApiControl.getTopSongsFromArtist(token, id);
+  const Element = document.createElement("div");
+
+  let mayor = topSongs[0];
+  topSongs.forEach((element) => {
+    if (element.popularity > mayor.popularity) {
+      mayor = element;
+    }
+  });
+  
+  let divHtml = `<div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Cancion más famosa: </p></div>
+  <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Nombre: <span class="font-extralight">${
+    mayor.name
+  }</span></p></div>
+  <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Popularidad: <span class="font-extralight">${
+    mayor.popularity
+  }%</span></p></div>
+  <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Duracion: <span class="font-extralight">${MilisToMins(mayor.
+    duration_ms
+  )}</span></p></div>
+  <div class="h-12 text-white font-bold flex items-center justify-center text-2xl">Ir a escuchar : <a href=" ${
+    mayor.external_urls.spotify
+  }" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style="fill: #000 transform: ;msFilter:;" class="hover:scale-125 duration-150 hover:fill-white mt-1"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="m9 17 8-5-8-5z"></path>
+  </svg></a></div>
+  `;
+  Element.innerHTML = divHtml;
+  if (divApp.childElementCount >= 1) {
+    divApp.innerHTML = "";
+  }
+  divApp.appendChild(Element);
+};
+
+mas_larga = async ()=>{
+  const token = await ApiControl.getToken();
+  const tf = document.getElementById("search_input");
+  let nombre = tf.value;
+  const divApp = document.getElementById("table_container");
+  const artist = await ApiControl.getArtist(token, nombre);
+  const id = artist.id;
+  const topSongs = await ApiControl.getTopSongsFromArtist(token, id);
+  const Element = document.createElement("div");
+  let most = topSongs[0];
+  topSongs.forEach(element => {
+    if(element.duration_ms>most.duration_ms){
+      most = element;
+    }
+  });
+  let divHtml = `
+  <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Cancion más larga: </p></div>
+  <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Nombre <span class="font-extralight">${
+    most.name
+  }</span></p></div>
+  <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Popularidad: <span class="font-extralight">${
+    most.popularity
+  }%</span></p></div>
+  <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Duracion: <span class="font-extralight">${MilisToMins(most.
+    duration_ms
+  )}</span></p></div>
+  <div class="h-12 text-white font-bold flex items-center justify-center text-2xl">Ir a escuchar : <a href=" ${
+    most.external_urls.spotify
+  }" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style="fill: #000 transform: ;msFilter:;" class="hover:scale-125 duration-150 hover:fill-white mt-1"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="m9 17 8-5-8-5z"></path>
+  </svg></a></div>
+  `;
+  Element.innerHTML = divHtml;
+  if (divApp.childElementCount >= 1) {
+    divApp.innerHTML = "";
+  }
+  divApp.appendChild(Element);
+};
+
+album_mas_canciones = async ()=>{
+  const token = await ApiControl.getToken();
+  const tf = document.getElementById("search_input");
+  let nombre = tf.value;
+  const divApp = document.getElementById("table_container");
+  const artist = await ApiControl.getArtist(token, nombre);
+  const id = artist.id;
+  const albumes = await ApiControl.getAlbumsFromArtist(token, id);
+  const Element = document.createElement("div");
+  let album = albumes[0];
+  albumes.forEach(element => {
+    if(element.total_tracks>album.total_tracks){
+      album = element;
+    }
+  });
+  let html = `<div class="">
+    <div class="flex items-center justify-center pt-2 rounded-xl"><img class="h-80 rounded-xl" src="${album.images[0].url}"></div>
+    <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Nombre: <span class="font-extralight">${album.name}</span></p></div>
+    <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold">Nro de canciones: <span class="font-extralight">${album.total_tracks}</span></p></div>
+    <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold">Fecha de estreno: <span class="font-extralight">${album.release_date}</span></p></div>
+    <div class="h-12 text-white font-bold flex items-center justify-center text-2xl">Ir a escuchar  <a href=" ${album.external_urls.spotify}" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style="fill: #000 transform: ;msFilter:;" class="hover:scale-125 duration-150 hover:fill-white mt-1"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="m9 17 8-5-8-5z"></path>
+    </svg></a></div>
+  </div>`;
+  Element.innerHTML = html;
+  if (divApp.childElementCount >= 1) {
+    divApp.innerHTML = "";
+  }
+  divApp.appendChild(Element);
 };

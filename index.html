@@ -19,10 +19,17 @@
         <h1 class="my-3 text-3xl text-white">¡Busca info de tu artista!</h1>
         <div id="inputs_container" class="flex flex-col items-center w-11/12">
           <input placeholder="Busca tu artista" id="search_input" type="search" class="w-3/4 h-10 px-4 py-1 m-4 border border-black rounded-xl">
-          <div id="buttons">
-            <button id="album_button" onclick="Mostrar_albumes()" class="w-fit h-8 mb-4 px-4 mr-3 border border-black rounded-xl text-white bg-black hover:scale-110 duration-100">Buscar albumes</button>
-            <button id="top_button" onClick="Mostrar_top()" class="w-fit h-8 mb-4 px-4 border border-black rounded-xl text-white bg-black hover:scale-110 duration-100">Buscar canciones Top</button>
-            <button id="top_button" onClick="Mostrar_Artista()" class="w-fit h-8 mb-4 ml-3 px-4 border border-black rounded-xl text-white bg-black hover:scale-110 duration-100">Info del artista</button>
+          <div class="flex flex-col items-center" id="buttons">
+            <div>
+              <button id="album_button" onclick="Mostrar_albumes()" class="w-fit h-8 mb-4 px-4 mr-3 border border-black rounded-xl text-white bg-black hover:scale-110 duration-100">Buscar albumes</button>
+              <button id="top_button" onClick="Mostrar_top()" class="w-fit h-8 mb-4 px-4 border border-black rounded-xl text-white bg-black hover:scale-110 duration-100">Buscar canciones Top</button>
+              <button id="top_button" onClick="Mostrar_Artista()" class="w-fit h-8 mb-4 ml-3 px-4 border border-black rounded-xl text-white bg-black hover:scale-110 duration-100">Info del artista</button>
+            </div>
+            <div>
+              <button id="album_button" onclick="Mostrar_mas_famosa()" class="w-fit h-8 mb-4 px-4 mr-3 border border-black rounded-xl text-white bg-black hover:scale-110 duration-100">Cancion más famosa</button>
+              <button id="album_button" onclick="mas_larga()" class="w-fit h-8 mb-4 px-4 mr-3 border border-black rounded-xl text-white bg-black hover:scale-110 duration-100">Cancion más larga</button>
+              <button id="album_button" onclick="album_mas_canciones()" class="w-fit h-8 mb-4 px-4 mr-3 border border-black rounded-xl text-white bg-black hover:scale-110 duration-100">Album con más canciones</button>
+            </div>
           </div>
         </div>
       </div>
