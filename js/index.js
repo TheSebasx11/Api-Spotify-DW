@@ -252,7 +252,7 @@ Mostrar_mas_famosa = async () => {
       mayor = element;
     }
   });
-  
+
   let divHtml = `<div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Cancion más famosa: </p></div>
   <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Nombre: <span class="font-extralight">${
     mayor.name
@@ -260,8 +260,8 @@ Mostrar_mas_famosa = async () => {
   <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Popularidad: <span class="font-extralight">${
     mayor.popularity
   }%</span></p></div>
-  <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Duracion: <span class="font-extralight">${MilisToMins(mayor.
-    duration_ms
+  <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Duracion: <span class="font-extralight">${MilisToMins(
+    mayor.duration_ms
   )}</span></p></div>
   <div class="h-12 text-white font-bold flex items-center justify-center text-2xl">Ir a escuchar : <a href=" ${
     mayor.external_urls.spotify
@@ -275,7 +275,7 @@ Mostrar_mas_famosa = async () => {
   divApp.appendChild(Element);
 };
 
-mas_larga = async ()=>{
+mas_larga = async () => {
   const token = await ApiControl.getToken();
   const tf = document.getElementById("search_input");
   let nombre = tf.value;
@@ -285,8 +285,8 @@ mas_larga = async ()=>{
   const topSongs = await ApiControl.getTopSongsFromArtist(token, id);
   const Element = document.createElement("div");
   let most = topSongs[0];
-  topSongs.forEach(element => {
-    if(element.duration_ms>most.duration_ms){
+  topSongs.forEach((element) => {
+    if (element.duration_ms > most.duration_ms) {
       most = element;
     }
   });
@@ -298,8 +298,8 @@ mas_larga = async ()=>{
   <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Popularidad: <span class="font-extralight">${
     most.popularity
   }%</span></p></div>
-  <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Duracion: <span class="font-extralight">${MilisToMins(most.
-    duration_ms
+  <div class="flex items-center justify-center text-2xl"><p class="text-white font-bold pt-2">Duracion: <span class="font-extralight">${MilisToMins(
+    most.duration_ms
   )}</span></p></div>
   <div class="h-12 text-white font-bold flex items-center justify-center text-2xl">Ir a escuchar : <a href=" ${
     most.external_urls.spotify
@@ -313,7 +313,7 @@ mas_larga = async ()=>{
   divApp.appendChild(Element);
 };
 
-album_mas_canciones = async ()=>{
+album_mas_canciones = async () => {
   const token = await ApiControl.getToken();
   const tf = document.getElementById("search_input");
   let nombre = tf.value;
@@ -323,8 +323,8 @@ album_mas_canciones = async ()=>{
   const albumes = await ApiControl.getAlbumsFromArtist(token, id);
   const Element = document.createElement("div");
   let album = albumes[0];
-  albumes.forEach(element => {
-    if(element.total_tracks>album.total_tracks){
+  albumes.forEach((element) => {
+    if (element.total_tracks > album.total_tracks) {
       album = element;
     }
   });
